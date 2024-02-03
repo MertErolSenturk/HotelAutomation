@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OtelOtomasyonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="islemler">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="islemId" Type="Int32" />
+    <Property Name="kullaniciId" Type="Int32" />
+    <Property Name="rezervasyonId" Type="Int32" />
+    <Property Name="guncellemeTarihi" Type="DateTime" Precision="3" />
+    <Property Name="silmeTarihi" Type="DateTime" Precision="3" />
+    <Property Name="olusturmaTarihi" Type="DateTime" Precision="3" />
+    <Property Name="AktifMi" Type="Boolean" />
+    <NavigationProperty Name="islemTuru" Relationship="Self.FK_islemler_islemTuru" FromRole="islemler" ToRole="islemTuru" />
+    <NavigationProperty Name="kullanici" Relationship="Self.FK_islemler_kullanici" FromRole="islemler" ToRole="kullanici" />
+    <NavigationProperty Name="rezervasyon" Relationship="Self.FK_islemler_rezervasyon" FromRole="islemler" ToRole="rezervasyon" />
+  </EntityType>
+  <EntityType Name="islemTuru">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="islemler" Relationship="Self.FK_islemler_islemTuru" FromRole="islemTuru" ToRole="islemler" />
+  </EntityType>
+  <EntityType Name="kullanici">
+    <Key>
+      <PropertyRef Name="kullanici_id" />
+    </Key>
+    <Property Name="kullanici_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kullanici_adi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="sifre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="yetki_id" Type="Int32" />
+    <Property Name="olusturmaTarihi" Type="DateTime" Precision="3" />
+    <Property Name="guncellemeTarihi" Type="DateTime" Precision="3" />
+    <Property Name="silmeTarihi" Type="DateTime" Precision="3" />
+    <Property Name="aktifMi" Type="Boolean" />
+    <NavigationProperty Name="islemler" Relationship="Self.FK_islemler_kullanici" FromRole="kullanici" ToRole="islemler" />
+    <NavigationProperty Name="yetki_turu" Relationship="Self.FK_kullanici_yetki_turu" FromRole="kullanici" ToRole="yetki_turu" />
+    <NavigationProperty Name="rezervasyon" Relationship="Self.FK_rezervasyon_kullanici" FromRole="kullanici" ToRole="rezervasyon" />
+  </EntityType>
+  <EntityType Name="odalar">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="oda_no" Type="Int32" />
+    <Property Name="oda_durum" Type="Boolean" />
+    <Property Name="kisi_sayisi" Type="Int32" />
+    <NavigationProperty Name="rezervasyon" Relationship="Self.FK_rezervasyon_odalar" FromRole="odalar" ToRole="rezervasyon" />
+  </EntityType>
+  <EntityType Name="rezervasyon">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="oda_id" Type="Int32" />
+    <Property Name="isim" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="soyisim" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="cinsiyet" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="giris_tarihi" Type="DateTime" Precision="0" />
+    <Property Name="cikis_tarihi" Type="DateTime" Precision="0" />
+    <Property Name="kullaniciId" Type="Int32" />
+    <Property Name="tc" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+    <Property Name="telNo" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+    <Property Name="olusturmaTarihi" Type="DateTime" Precision="3" />
+    <Property Name="guncellemeTarihi" Type="DateTime" Precision="3" />
+    <Property Name="silmeTarihi" Type="DateTime" Precision="3" />
+    <Property Name="aktifMi" Type="Boolean" />
+    <NavigationProperty Name="islemler" Relationship="Self.FK_islemler_rezervasyon" FromRole="rezervasyon" ToRole="islemler" />
+    <NavigationProperty Name="kullanici" Relationship="Self.FK_rezervasyon_kullanici" FromRole="rezervasyon" ToRole="kullanici" />
+    <NavigationProperty Name="odalar" Relationship="Self.FK_rezervasyon_odalar" FromRole="rezervasyon" ToRole="odalar" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="yetki_turu">
+    <Key>
+      <PropertyRef Name="yetki_id" />
+    </Key>
+    <Property Name="yetki_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="yetki_adi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="kullanici" Relationship="Self.FK_kullanici_yetki_turu" FromRole="yetki_turu" ToRole="kullanici" />
+  </EntityType>
+  <Association Name="FK_islemler_islemTuru">
+    <End Role="islemTuru" Type="Self.islemTuru" Multiplicity="0..1" />
+    <End Role="islemler" Type="Self.islemler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="islemTuru">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="islemler">
+        <PropertyRef Name="islemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_islemler_kullanici">
+    <End Role="kullanici" Type="Self.kullanici" Multiplicity="0..1" />
+    <End Role="islemler" Type="Self.islemler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kullanici">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="islemler">
+        <PropertyRef Name="kullaniciId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_islemler_rezervasyon">
+    <End Role="rezervasyon" Type="Self.rezervasyon" Multiplicity="0..1" />
+    <End Role="islemler" Type="Self.islemler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rezervasyon">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="islemler">
+        <PropertyRef Name="rezervasyonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_kullanici_yetki_turu">
+    <End Role="yetki_turu" Type="Self.yetki_turu" Multiplicity="0..1" />
+    <End Role="kullanici" Type="Self.kullanici" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="yetki_turu">
+        <PropertyRef Name="yetki_id" />
+      </Principal>
+      <Dependent Role="kullanici">
+        <PropertyRef Name="yetki_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rezervasyon_kullanici">
+    <End Role="kullanici" Type="Self.kullanici" Multiplicity="0..1" />
+    <End Role="rezervasyon" Type="Self.rezervasyon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kullanici">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="rezervasyon">
+        <PropertyRef Name="kullaniciId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rezervasyon_odalar">
+    <End Role="odalar" Type="Self.odalar" Multiplicity="0..1" />
+    <End Role="rezervasyon" Type="Self.rezervasyon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="odalar">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="rezervasyon">
+        <PropertyRef Name="oda_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AppDbContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="islemler" EntityType="Self.islemler" />
+    <EntitySet Name="islemTuru" EntityType="Self.islemTuru" />
+    <EntitySet Name="kullanici" EntityType="Self.kullanici" />
+    <EntitySet Name="odalar" EntityType="Self.odalar" />
+    <EntitySet Name="rezervasyon" EntityType="Self.rezervasyon" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="yetki_turu" EntityType="Self.yetki_turu" />
+    <AssociationSet Name="FK_islemler_islemTuru" Association="Self.FK_islemler_islemTuru">
+      <End Role="islemTuru" EntitySet="islemTuru" />
+      <End Role="islemler" EntitySet="islemler" />
+    </AssociationSet>
+    <AssociationSet Name="FK_islemler_kullanici" Association="Self.FK_islemler_kullanici">
+      <End Role="kullanici" EntitySet="kullanici" />
+      <End Role="islemler" EntitySet="islemler" />
+    </AssociationSet>
+    <AssociationSet Name="FK_islemler_rezervasyon" Association="Self.FK_islemler_rezervasyon">
+      <End Role="rezervasyon" EntitySet="rezervasyon" />
+      <End Role="islemler" EntitySet="islemler" />
+    </AssociationSet>
+    <AssociationSet Name="FK_kullanici_yetki_turu" Association="Self.FK_kullanici_yetki_turu">
+      <End Role="yetki_turu" EntitySet="yetki_turu" />
+      <End Role="kullanici" EntitySet="kullanici" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rezervasyon_kullanici" Association="Self.FK_rezervasyon_kullanici">
+      <End Role="kullanici" EntitySet="kullanici" />
+      <End Role="rezervasyon" EntitySet="rezervasyon" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rezervasyon_odalar" Association="Self.FK_rezervasyon_odalar">
+      <End Role="odalar" EntitySet="odalar" />
+      <End Role="rezervasyon" EntitySet="rezervasyon" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
